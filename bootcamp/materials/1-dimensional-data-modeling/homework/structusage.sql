@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS actors;
 DROP TYPE films;
 CREATE TYPE films AS  (film TEXT,
-			 year INTEGER,
 			 votes INTEGER,
 			 rating REAL,
 			 filmid TEXT);
@@ -29,7 +28,7 @@ CREATE TABLE actors AS
 	SELECT
 		af.actorid,
 		af.actor,
-		array_agg(ROW(af.film, af.year, af.votes, af.rating, af.filmid)::films) AS films,
+		array_agg(ROW(af.film, af.votes, af.rating, af.filmid)::films) AS films,
 		ary.quality_class,
 		CASE 
 		WHEN ary.recent_year = '2021' THEN 1
