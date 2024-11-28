@@ -75,7 +75,7 @@ BEGIN
 					THEN y.films || t.films_in_year		
 				ELSE y.films
 			END AS films,
-			t.quality_class,
+			COALESCE(t.quality_class,y.quality_class) AS quality_class,
 			CASE 
 				WHEN t.year IS NOT NULL
 					THEN TRUE
@@ -90,7 +90,8 @@ END $$;
 
 
 -- query to test cumulative desing table
-SELECT * FROM actors_cd
+SELECT * FROM actors_cd;
+
 --where current_year ='1970' and actorid ='nm0001128'
 
 -- Unnesting query decumulating, it's always gonna be sorted
@@ -110,6 +111,6 @@ SELECT actor,
 	actorid,
 	year,
 	(films::films).* AS films
-FROM unnested
+FROM unnested;
 
 	

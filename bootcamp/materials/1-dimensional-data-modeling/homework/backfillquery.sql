@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS actors_history_scd;
-CREATE TABLE actors_history_scd(
+DROP TABLE IF EXISTS actors_history_scd_bf;
+CREATE TABLE actors_history_scd_bf(
 		actorid TEXT,
 		actor TEXT,
 		streak_identifier INT,
@@ -7,11 +7,11 @@ CREATE TABLE actors_history_scd(
 	    is_active BOOL,
 		start_year INT,
 		end_year INT,
+		current_year INT,
 		PRIMARY KEY(actorid, start_year)
 	
 	);
-	
-INSERT INTO actors_history_scd
+INSERT INTO actors_history_scd_bf
 with change_indicator AS (	
 	SELECT 
 		actorid,
@@ -34,6 +34,7 @@ with change_indicator AS (
 			ELSE 0
 		END AS change_indicator
 	FROM actors_cd
+	WHERE current_year <= '2021'
 ),
 streak_identifier as (
 	SELECT
@@ -55,7 +56,8 @@ SELECT
 	quality_class,
     is_active,
     MIN(current_year) AS start_year,
-    MAX(current_year) AS end_year
+    MAX(current_year) AS end_year,
+	2021 AS current_year
 FROM streak_identifier
 GROUP BY 
 	actorid,
@@ -67,6 +69,9 @@ GROUP BY
 ORDER BY 
 	actorid,
 	streak_identifier;
-
+	
 --select query
-SELECT * FROM actors_history_scd ;	
+SELECT * FROM actors_history_scd_bf ;	
+
+
+	
